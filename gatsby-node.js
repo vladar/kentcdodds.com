@@ -227,6 +227,7 @@ const createPages = async ({actions, graphql}) => {
 const onCreateWebpackConfig = ({actions}) => {
   actions.setWebpackConfig({
     resolve: {
+      fallback: {path: require.resolve('path-browserify')},
       modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     },
   })
@@ -412,6 +413,7 @@ function onCreateMdxNode({node, getNode, actions}) {
 }
 
 const onPreBootstrap = () => {
+  return
   if (process.env.gatsby_executing_command === 'develop') {
     return
   }
@@ -425,16 +427,20 @@ const onPreBootstrap = () => {
     })
   }
 
-  const result = spawnSync(
-    './node_modules/.bin/npm-run-all --parallel lint test:coverage',
-    {stdio: 'inherit', shell: true},
+  const tmp = path.resolve(
+    path.join(process.cwd(), './node_modules/.bin/npm-run-all'),
   )
+  const result = spawnSync(`${tmp} --parallel lint test:coverage`, {
+    stdio: 'inherit',
+    shell: true,
+  })
   if (result.status !== 0) {
     throw new Error(`pre build failure. Status: ${result.status}`)
   }
 }
 
 const onPostBuild = async ({graphql}) => {
+  return
   if (process.env.gatsby_executing_command === 'develop') {
     return
   }

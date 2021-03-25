@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import {Link as RouterLink} from '@reach/router'
+// import {Link as RouterLink} from '@reach/router'
+import RouterLink from 'gatsby-link'
 import Img from 'gatsby-image'
 import {rankings as matchSorterRankings} from 'match-sorter'
 import theme from '../../../config/theme'
